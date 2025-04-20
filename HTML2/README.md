@@ -4,6 +4,6 @@ Build additional two web pages, the first is going to be a table about all the c
 
 Second page is a page where you use all the media element existing in html to create powerful message about yourself. Specially use picture element with more that 3 sources with responsiveness for mobile, tablet and laptop.
 
-![table.html](./table.html) and ![media.html](./media.html)
+[table.html](./table.html) and [media.html](./media.html)
 
 NB: Strictly without CSS.
