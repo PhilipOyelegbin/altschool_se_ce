@@ -1,0 +1,90 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: o;
+  margin: 0;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9fc;
+}
+
+.calculator {
+  background: #242530;
+  padding: 25px;
+  width: 400px;
+}
+
+.display {
+  background: #3a3f77;
+  color: #ffffff;
+  font-size: 2rem;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: right;
+  margin-bottom: 20px;
+  height: 70px;
+  overflow: auto hidden;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+}
+
+.btn {
+  font-size: 24px;
+  border: none;
+  background: #404258;
+  width: 65px;
+  height: 45px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.number,
+.cancel {
+  padding: 5px 18px;
+  border-radius: 35%;
+}
+
+.btn:hover {
+  background-color: #505080;
+}
+
+.operator {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #f49d1a;
+  font-size: 32px;
+  padding: 0 5px 6px;
+}
+
+.operator:hover {
+  background-color: #ff9800;
+}
+
+.equal {
+  grid-column: span 2;
+  background: #b2b2b2;
+  color: black;
+  border-radius: 30px;
+}
+
+@media screen and (max-width: 400px) {
+  .calculator {
+    width: 85%;
+  }
+}
