@@ -1,6 +1,6 @@
 # Exercise 1
 
-Task: Setup Ubuntu 20.04 LTS on your local machine using Vagrant
+**Task:** Setup Ubuntu 20.04 LTS on your local machine using Vagrant
 
 **Instruction:**
 

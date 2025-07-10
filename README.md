@@ -17,4 +17,5 @@ This repo comprises of all my AltSchool tasks and projects for cloud engineering
 - JS3: Click [here](./first-semester/JS3/) to access the folder.
 - Project1: Click [here](./first-semester/calculator-assignment/) to access the folder.
 - Linux1: Click [here](./second-semester/Exercise1/) to access the folder.
+- Linux2: Click [here](./second-semester/Exercise2/) to access the folder.
 -
