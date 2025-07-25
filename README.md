@@ -2,6 +2,11 @@
 
 This repo comprises of all my AltSchool tasks and projects for cloud engineering
 
+- **Name:** Philip Oyelegbin
+- **Student ID:** ALT/SOE/025/1574
+- **Department:** School of Engineering
+- **Course:** Cloud Engineering
+
 ### List of tasks and projects
 
 - HTML1: Click [here](./HTML1/) to access the folder.
@@ -18,4 +23,5 @@ This repo comprises of all my AltSchool tasks and projects for cloud engineering
 - Project1: Click [here](./first-semester/calculator-assignment/) to access the folder.
 - Linux1: Click [here](./second-semester/Exercise1/) to access the folder.
 - Linux2: Click [here](./second-semester/Exercise2/) to access the folder.
--
+- Linux3: Click [here](./second-semester/Exercise3/) to access the folder.
+- Linux4: Click [here](./second-semester/Exercise4/) to access the folder.
