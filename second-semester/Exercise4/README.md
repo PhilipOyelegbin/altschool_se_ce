@@ -14,7 +14,8 @@ Make sure to upload/embed your answers and screenshots in your Google Doc or Wor
 **Result:**
 
 1. The comand for checking running process is `top`. Below is the list of 5 running processes on my system as seen in the snapshot below.
-   ![process](./process.png)
+
+![process](./process.png)
 
 - `systemd`: This is one of the most fundamental and critical processes on modern Linux distributions, including AlmaLinux 9. It's often referred to as the "init system" or "system and service manager". When a Linux kernel boots up, after initializing hardware, it hands off control to the very first user-space process.
 - `kworker`: This are generic kernel worker threads. They are a fundamental part of the Linux kernel's internal workings, and their primary purpose is to execute deferred work within the kernel. It is responsible for handling kernel tasks

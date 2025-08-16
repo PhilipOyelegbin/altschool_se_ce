@@ -25,3 +25,4 @@ This repo comprises of all my AltSchool tasks and projects for cloud engineering
 - Linux2: Click [here](./second-semester/Exercise2/) to access the folder.
 - Linux3: Click [here](./second-semester/Exercise3/) to access the folder.
 - Linux4: Click [here](./second-semester/Exercise4/) to access the folder.
+- Linux5: Click [here](./second-semester/Exercise5/) to access the folder.
