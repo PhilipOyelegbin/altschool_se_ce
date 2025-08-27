@@ -6,7 +6,7 @@ Host an index.php file with the following content, as the main file on the serve
 
 ```
 <?php
-date("F d, Y h:i:s A e", time());
+  echo date("F d, Y h:i:s A e", time());
 ?>
 ```
 
@@ -16,40 +16,20 @@ date("F d, Y h:i:s A e", time());
 
 ## 🚀 Result
 
-1. Created a bash script to automate the memory usage log and report [memory_log script](./memory_log.sh).
+1. Setup a remote server on AWS and added my public key to te server for authorization
 
-2. Setup cronjob to schedule the task [cronjob content](./crontab).
+2. Created an [inventory](./inventory.ini) file containing my remote web server IP address
 
-3. Installed and cofigure postfix as send only smtp server using the steps below;
+3. Wrote an [ansible playbook](./setup_apache_php.yml) script to configure my remote server.
 
-   - Update the package database `sudo apt-get update`
-   - Installing mailutils will install Postfix as well as a few other programs needed for Postfix to function. `sudo apt install mailutils -y`
-   - Select "internet-site" in the configuratin window and click "Ok" as seen below
-     ![image1](./internet-site.png)
-   - Update the system mail name to "localhost.com" or leave the default value.
-     ![image2](./domain.png)
-   - Edit the file "main.cf" to configure postfix `sudo nano /etc/postfix/main.cf`
-   - Find and update the following details as seen below
+4. Created the [index](./index.php) web file needed to be copied to remote server.
 
-   ```
-   inet_interfaces = loopback-only
+5. Ran the command `ansible-playbook -i inventory.ini setup_apache_php.yml` to initiate the remote server configuration.
 
-   # add your hostname to the list of the destination below, mine is "ubuntu2010.localdomain"
-   mydestination = $myhostname, ubuntu2010.localdomain, localhost.$mydomain, $mydomain
-   ```
+6. Used the command `ansible -i inventory.ini webserver -m shell -a "systemctl status apache2" -u vagrant --become` to get the output of systemctl status apache2 after deploying the playbook.
 
-   - Save and restart postfix `sudo systemctl restart postfix`
-   - Run a test using your email, I recommend using a cpanel/professional webmail, gmail might not work
+   ![status view](./apachestat.png)
 
-   ```
-   echo "The mail is working" | mail -s "PostFix Mail Test" your_email_address
-   ```
+7. Below is the image of the rendered page
 
-4. Set the server timezone to my local timezone using the command `sudo timedatectl set-timezone Africa/Lagos`
-
-5. Below is the image of the mail received
-   ![mail sample](./domain.png)
-
-## 📑 Resources Used
-
-- [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-as-a-send-only-smtp-server-on-ubuntu-16-04)
+   ![website sample](./web.png)

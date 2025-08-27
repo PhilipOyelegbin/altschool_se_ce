@@ -9,20 +9,21 @@ This repo comprises of all my AltSchool tasks and projects for cloud engineering
 
 ### List of tasks and projects
 
-- HTML1: Click [here](./HTML1/) to access the folder.
-- HTML2: Click [here](./HTML2/) to access the folder.
-- CSS1: Click [here](./first-semester/CSS1/) to access the folder.
-- CSS2: Click [here](./first-semester/CSS2/) to access the folder.
-- CSS3: Click [here](./first-semester/CSS3/) to access the folder.
-- CSS4: Click [here](./first-semester/CSS4/) to access the folder.
-- CSS5: Click [here](./first-semester/CSS5/) to access the folder.
-- CSS6: Click [here](./first-semester/CSS6/) to access the folder.
-- JS1: Click [here](./first-semester/JS1/) to access the folder.
-- JS2: Click [here](./first-semester/JS2/) to access the folder.
-- JS3: Click [here](./first-semester/JS3/) to access the folder.
-- Project1: Click [here](./first-semester/calculator-assignment/) to access the folder.
-- Linux1: Click [here](./second-semester/Exercise1/) to access the folder.
-- Linux2: Click [here](./second-semester/Exercise2/) to access the folder.
-- Linux3: Click [here](./second-semester/Exercise3/) to access the folder.
-- Linux4: Click [here](./second-semester/Exercise4/) to access the folder.
-- Linux5: Click [here](./second-semester/Exercise5/) to access the folder.
+- [HTML1](./first-semester/HTML1/)
+- [HTML2](./first-semester/HTML2/)
+- [CSS1](./first-semester/CSS1/)
+- [CSS2](./first-semester/CSS2/)
+- [CSS3](./first-semester/CSS3/)
+- [CSS4](./first-semester/CSS4/)
+- [CSS5](./first-semester/CSS5/)
+- [CSS6](./first-semester/CSS6/)
+- [JS1](./first-semester/JS1/)
+- [JS2](./first-semester/JS2/)
+- [JS3](./first-semester/JS3/)
+- [Project1](./first-semester/calculator-assignment/)
+- [Linux1](./second-semester/Exercise1/)
+- [Linux2](./second-semester/Exercise2/)
+- [Linux3](./second-semester/Exercise3/)
+- [Linux4](./second-semester/Exercise4/)
+- [Linux5](./second-semester/Exercise5/)
+- [Linux6](./second-semester/Exercise6/)

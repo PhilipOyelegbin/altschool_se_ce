@@ -1,0 +1,61 @@
+---
+- name: Setup an Apache Web Server with PHP and correct timezone
+  hosts: webserver
+  remote_user: ubuntu
+  become: yes
+
+  vars:
+    desired_timezone: "Africa/Lagos"
+    php_ini_paths:
+      - "/etc/php/8.3/apache2/php.ini"
+      - "/etc/php/8.3/cli/php.ini"
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Apache and PHP with Apache integration
+      apt:
+        name:
+          - apache2
+          - php
+          - libapache2-mod-php8.3
+          - php-cli
+        state: present
+
+    - name: Set system timezone to {{ desired_timezone }}
+      ansible.builtin.shell: timedatectl set-timezone "{{ desired_timezone }}"
+
+    - name: Ensure PHP ini file has correct timezone
+      lineinfile:
+        path: "{{ item }}"
+        regexp: '^;?date.timezone\s*='
+        line: "date.timezone = {{ desired_timezone }}"
+        backup: yes
+      loop: "{{ php_ini_paths }}"
+      notify: Restart Apache
+
+    - name: Copy custom index.php file to the server
+      ansible.builtin.copy:
+        src: /home/vagrant/ansible/index.php
+        dest: /var/www/html/index.php
+        owner: ubuntu
+        group: ubuntu
+        mode: "0644"
+
+    - name: Remove default index.html file if it exists
+      ansible.builtin.file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Restart Apache to apply PHP configuration
+      service:
+        name: apache2
+        state: restarted
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
