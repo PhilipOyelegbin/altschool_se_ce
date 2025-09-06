@@ -27,3 +27,4 @@ This repo comprises of all my AltSchool tasks and projects for cloud engineering
 - [Linux4](./second-semester/Exercise4/)
 - [Linux5](./second-semester/Exercise5/)
 - [Linux6](./second-semester/Exercise6/)
+- [Networking1](./second-semester/Exercise7/)
