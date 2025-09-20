@@ -21,11 +21,11 @@ You are required to perform the following tasks
 
 1. Create a jump host called JumperHost1 on AWS and copy the private key to the jump host from local manchine to connect to the nginx servers using the command below
    `scp -i '<key-name>.pem' /path/<key-name>.pem ubuntu@<jumphost-ip>:/home/ubuntu/`
-   ![jumperhost](./jumperhost.png)
+   ![jumperhost](./images/jumperhost.png)
 
 2. Create 2 nginx server in a priate network and a load balancer for http access.
-   ![instance1](./instance1.png)
-   ![instance2](./instance2.png)
+   ![instance1](./images/instance1.png)
+   ![instance2](./images/instance2.png)
 
 3. Create an [inventory](./inventory.ini) file containing the nginx server private IP addresses.
 
@@ -36,13 +36,13 @@ You are required to perform the following tasks
 6. Create the [default](./nginx-default) configuration file needed t replace the default nginx configuration.
 
 7. Create a launch template to setup the auto scaling group
-   ![launch template and auto scaling](./autoscaling.png)
+   ![launch template and auto scaling](./images/autoscaling.png)
 
 8. Run the command `ansible-playbook -i inventory.ini --private-key=<key-name>.pem nginx-server.yml` from the jumperhost to initiate the remote server configuration.
 
-   ![provisioning](./provisioning.png)
+   ![provisioning](./images/provisioning.png)
 
 9. Below is the image of the rendered pages from different server via the load balancer domain name (http://nginx-elb-119987416.eu-west-2.elb.amazonaws.com).
 
-   ![website sample1](./server1.png)
-   ![website sample2](./server2.png)
+   ![website sample1](./images/server1.png)
+   ![website sample2](./images/server2.png)

@@ -7,42 +7,36 @@
 **Result:**
 
 - grep: is used to print lines that match the given patterns (e.g `ls grep *.ini`).
-
-![grep](./grep.png)
+  ![grep](./images/grep.png)
 
 - systemctl: is used to control the systemd system and service manager (e.g `stystemctl status agache2`).
-
-![systemctl](./systemctl.png)
+  ![systemctl](./images/systemctl.png)
 
 - crontab: is used to maintain crontab files for individual users (e.g `crontab -e`).
-
-![crontab](./crontab.png)
-![crontab-file](./crontab-file.png)
+  ![crontab](./images/crontab.png)
+  ![crontab-file](./images/crontab-file.png)
 
 - host: is used to lookup the DNS of a domain name (e.g `host cisco.com`).
-
-![host](./host.png)
+  ![host](./images/host.png)
 
 - find: is used to search for files in a directory hierarchy (e.g `find -name *.ini`).
 
-![find](./find.png)
+  ![find](./images/find.png)
 
 - uptime: this shows how long the system has been running (e.g `uptime`).
 
-![uptime](./uptime.png)
+  ![uptime](./images/uptime.png)
 
 - ping: this sends an ICMP ECHO_REQUEST to network hosts (e.g `ping -c3 cisco.com`).
-
-![ping](./ping.png)
+  ![ping](./images/ping.png)
 
 - whoami: this prints the user name associated with the current effective user ID (e.g `whoami`).
 
-![whoami](./whoami.png)
+  ![whoami](./images/whoami.png)
 
 - hostname: is used to display the system's DNS name, and to display or set its hostname or NIS domain name (e.g `hostname`).
-
-![hostname](./hostname.png)
+  ![hostname](./images/hostname.png)
 
 - which: it is used to locate a command (e.g `which bash`).
 
-![which](./which.png)
+  ![which](./images/which.png)
