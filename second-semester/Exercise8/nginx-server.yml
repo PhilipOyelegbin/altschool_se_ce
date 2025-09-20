@@ -1,0 +1,51 @@
+---
+- name: Set Up Nginx Web Server
+  hosts: webserver
+  remote_user: ubuntu
+  become: yes
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Nginx, PHP-FPM and PHP-MySQL
+      apt:
+        name:
+          - nginx
+          - php-fpm
+          - php-mysql
+        state: present
+
+    - name: Ensure Nginx service is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy custom index.php file to the remote server
+      ansible.builtin.copy:
+        src: /home/ubuntu/index.php
+        dest: /var/www/html/index.php
+        owner: ubuntu
+        group: ubuntu
+        mode: "0644"
+
+    - name: Replace Nginx default configuration file with a new one
+      copy:
+        src: /home/ubuntu/nginx-default
+        dest: /etc/nginx/sites-available/default
+        owner: root
+        group: root
+        mode: "0644"
+        backup: yes
+
+    - name: Test Nginx configuration
+      command: nginx -t
+      register: nginx_test
+      failed_when: nginx_test.rc != 0
+
+    - name: Restart Nginx to apply changes
+      systemd:
+        name: nginx
+        state: restarted
