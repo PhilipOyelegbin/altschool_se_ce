@@ -1,0 +1,46 @@
+---
+- name: Set Up Nginx Web Server
+  hosts: webserver
+  remote_user: ubuntu
+  become: yes
+
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Nginx
+      apt:
+        name:
+          - nginx
+        state: present
+
+    - name: Ensure Nginx service is started and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Deploy index.html with server IP
+      ansible.builtin.copy:
+        src: /home/vagrant/ansible/index.html
+        dest: /var/www/html/index.html
+        owner: ubuntu
+        group: ubuntu
+        mode: "0644"
+
+    - name: Get public IP from ifconfig.me
+      community.general.ipify_facts:
+        api_url: http://api.ipify.org
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Replace placeholder in HTML with public IP
+      ansible.builtin.replace:
+        path: /var/www/html/index.html
+        regexp: "SERVER_PUBLIC_IP_PLACEHOLDER"
+        replace: "{{ ansible_facts.ipify_public_ip }}"
+
+    - name: Restart Nginx to apply changes
+      systemd:
+        name: nginx
+        state: restarted
