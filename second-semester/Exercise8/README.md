@@ -23,7 +23,7 @@ You are required to perform the following tasks
    `scp -i '<key-name>.pem' /path/<key-name>.pem ubuntu@<jumphost-ip>:/home/ubuntu/`
    ![jumperhost](./images/jumperhost.png)
 
-2. Create 2 nginx server in a priate network and a load balancer for http access.
+2. Create 2 nginx server in a private network and a load balancer for http access.
    ![instance1](./images/instance1.png)
    ![instance2](./images/instance2.png)
 
@@ -33,7 +33,7 @@ You are required to perform the following tasks
 
 5. Create the [index](./index.php) web file needed to be copied to nginx server.
 
-6. Create the [default](./nginx-default) configuration file needed t replace the default nginx configuration.
+6. Create the [default](./nginx-default) configuration file needed to replace the default nginx configuration.
 
 7. Create a launch template to setup the auto scaling group
    ![launch template and auto scaling](./images/autoscaling.png)

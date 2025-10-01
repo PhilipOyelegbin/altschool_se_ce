@@ -24,20 +24,6 @@ You are required to perform the following tasks
 
 3. DELETE all resources after!
 
-4. Create a Google Doc and paste all your screenshots in it plus the links to your Medium Article. Only one Google Doc is to be submitted by each student.
-
----
-
-**Deliverables (all compiled in one Google Doc):**
-
-- Screenshot of your browser hitting the ALB DNS name (showing each instance’s HTML page).
-- Screenshot of your Ansible Playbook.
-- Screenshot of your AWS Console showing the ALB.
-- Screenshot of your AWS EC2 Console showing the 2 EC2 instances.
-- Screenshot of your S3 bucket static website.
-- Link to your Medium Article.
-- The Link to your HTML GitHub Repo
-
 ---
 
 ## 🚀 Result
@@ -49,9 +35,6 @@ You are required to perform the following tasks
 2. Create an [inventory](./inventory.ini) file containing the nginx servers IP addresses.
 
 3. Create the [index](./index.html) file needed to server static content on nginx servers.
-
-<!-- 4. Create a launch template to setup the auto scaling group
-   ![launch template and auto scaling](./images/autoscaling.png) -->
 
 4. Run the command `ansible-playbook -i inventory.ini --private-key=<key-name>.pem nginx-server.yml` to initiate the remote server configuration.
 
