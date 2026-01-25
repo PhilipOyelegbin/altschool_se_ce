@@ -32,3 +32,4 @@ This repo comprises of all my AltSchool tasks and projects for cloud engineering
 - [2ns Semester Exam](./second-semester/Examination/README.md)
 - [3rd Semester Task-1](./third-semester/month-one-assessment/README.md)
 - [3rd Semester Task-2](./third-semester/month-two-assessment/README.md)
+- [3rd Semester Task-3](./third-semester/month-three-assessment/README.md)

@@ -1,0 +1,186 @@
+name: Backend CI/CD Pipeline to AWS
+
+on:
+  push:
+    branches: [main, staging, clean]
+    paths:
+      - "backend/**"
+  pull_request:
+    branches: [staging]
+    paths:
+      - "backend/**"
+
+jobs:
+  build:
+    if: >
+      github.event_name == 'push' && (
+        github.ref == 'refs/heads/main' ||
+        github.ref == 'refs/heads/staging'
+      ) ||
+      github.event_name == 'pull_request' && github.base_ref == 'staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+        with:
+          buildkitd-flags: --debug
+
+      - name: Setup golang
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+        env:
+          PORT: 8080
+          ALLOWED_ORIGINS: "http://localhost:5173,http://localhost:3000"
+          COOKIE_DOMAINS: "localhost,example.com"
+          SECURE_COOKIE: false
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          DB_NAME: much_todo_db
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          JWT_EXPIRATION_HOURS: 2
+          LOG_LEVEL: "DEBUG"
+          LOG_FORMAT: "json"
+          INTEGRATION: true
+          ENABLE_CACHE: true
+          REDIS_ADDR: "${{ secrets.REDIS_ADDR }}:6379"
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+
+      - name: Install dependencies and setup .env file
+        run: |
+          cd backend/MuchToDo/
+          go mod download
+
+      - name: Scan code for exposed secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run the unit tests for Go
+        run: |
+          cd backend/MuchToDo/
+          go test ./...
+
+      - name: Run integration tests for Go
+        run: |
+          cd backend/MuchToDo/
+          INTEGRATION=true go test -v --tags=integration ./...
+
+      - name: Run Go Linter (golangci-lint)
+        uses: reviewdog/action-golangci-lint@v2
+        with:
+          workdir: backend/MuchToDo/
+
+      - name: Build the docker image
+        run: |
+          cd backend/
+          docker build -t muchtodo:latest .
+
+      - name: Scan Docker Image for vulnerabilities (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "muchtodo:latest"
+          format: "table"
+          exit-code: "1"
+          severity: "CRITICAL,HIGH"
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push image to Docker Hub
+        run: |
+          docker tag muchtodo:latest ${{ secrets.DOCKER_HUB_USERNAME }}/muchtodo:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/muchtodo:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Connect to the server via ssh
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          script: |
+            echo "--- Creating .env file ---"
+            cat <<'EOF' > .env
+            PORT=8080
+            ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+            COOKIE_DOMAINS=localhost,example.com
+            SECURE_COOKIE=false
+            MONGO_URI=${{ secrets.MONGO_URI }}
+            DB_NAME=much_todo_db
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+            JWT_EXPIRATION_HOURS=2
+            LOG_LEVEL=INFO
+            LOG_FORMAT=json
+            INTEGRATION=false
+            ENABLE_CACHE=true
+            REDIS_ADDR="${{ secrets.REDIS_ADDR }}:6379"
+            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+            EOF
+
+            echo "Stopping nginx if running..."
+            sudo systemctl stop nginx || true
+
+            echo "--- Deploy rolling update using docker compose ---"
+            cat <<'EOF' > docker-compose.yml
+            services:
+              muchtodo:
+                image: ${{ secrets.DOCKER_HUB_USERNAME }}/muchtodo:latest
+                ports:
+                  - "80:8080"
+                volumes:
+                  - ./.env:/app/.env:ro
+                restart: always
+            EOF
+            sudo docker compose down
+            sudo docker compose up -d --remove-orphans
+            echo "Docker containers are up and running."
+            echo "Deployment completed."
+
+      - name: Run Smoke Tests (Verify API is up)
+        run: |
+          echo "Running smoke test to verify API is up..."
+          curl --fail "${{ secrets.VITE_API_BASE_URL }}/health" || exit 1 
+          echo "Smoke test passed. API is healthy."
+
+      # - name: Send Slack Notification
+      #   if: always()
+      #   uses: rtCamp/action-slack-notify@v2
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     SLACK_MESSAGE: "Backend deployment to Docker on EC2 is complete! 🎉"
+
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/clean'
+    steps:
+      - name: Connect to the server via ssh
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          script: |
+            sudo docker stop muchtodo || true
+            sudo docker rm muchtodo || true
+            sudo docker rmi ${{ secrets.DOCKER_HUB_USERNAME }}/muchtodo:latest || true
+            sudo docker system prune -af
+            echo "Cleanup completed."
